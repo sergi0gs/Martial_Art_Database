@@ -1,0 +1,70 @@
+CREATE DATABASE IF NOT EXISTS db_martial_arts;
+
+USE db_martial_arts;
+
+CREATE TABLE masters(
+	`id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `birthdate` DATE NOT NULL,
+    `teacher` VARCHAR(100) NOT NULL,
+    PRIMARY KEY(`id`)) Engine = InnoDB;
+    
+CREATE TABLE martial_arts(
+	`id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `origin` VARCHAR(50) NOT NULL,
+    `country` VARCHAR(50) NOT NULL,
+    `n_styles` SMALLINT NOT NULL,
+    PRIMARY KEY(`id`)) ENGINE = InnoDB;
+
+CREATE TABLE books(
+	`id` INTEGER NOT NULL AUTO_INCREMENT,
+    `ma_id` INTEGER NOT NULL,
+    `title` VARCHAR(100) NOT NULL,
+    `author` VARCHAR(100) NOT NULL,
+    `year` SMALLINT NOT NULL,
+    PRIMARY KEY(`id`),
+    FOREIGN KEY(`ma_id`) REFERENCES martial_arts(`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT) ENGINE = InnoDB;
+
+CREATE TABLE documentaries(
+	`id`INTEGER NOT NULL AUTO_INCREMENT,
+    `ma_id`INTEGER NOT NULL,
+    `name`VARCHAR(100) NOT NULL,
+    `year`SMALLINT NOT NULL,
+    `country`VARCHAR(50) NOT NULL,
+    PRIMARY KEY(`id`),
+    FOREIGN KEY(`ma_id`) REFERENCES martial_arts(`id`)
+	ON UPDATE CASCADE ON DELETE RESTRICT)ENGINE = InnoDB;
+    
+CREATE TABLE ma_masters(
+	`id`INTEGER NOT NULL AUTO_INCREMENT,
+    `ma_id` INTEGER NOT NULL,
+    `master_id` INTEGER NOT NULL,
+    PRIMARY KEY(`id`),
+    FOREIGN KEY(`ma_id`) REFERENCES martial_arts(`id`)
+	ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY(`master_id`) REFERENCES masters(`id`)
+	ON UPDATE CASCADE ON DELETE RESTRICT)ENGINE = InnoDB;
+    
+CREATE TABLE styles(
+	`id`INTEGER NOT NULL AUTO_INCREMENT,
+    `ma_id` INTEGER NOT NULL,
+    `name`VARCHAR(100) NOT NULL,
+    `philosophy` TEXT NOT NULL,
+    `year` SMALLINT NOT NULL,
+    `founder` VARCHAR(100),
+    PRIMARY KEY(`id`),
+    FOREIGN KEY(`ma_id`) REFERENCES martial_arts(`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT)ENGINE = InnoDB;
+    
+CREATE TABLE founders(
+	`id`INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `birthdate` DATE NOT NULL,
+    `ma_id` INTEGER NOT NULL,
+    `style` VARCHAR(50),
+    PRIMARY KEY(`id`),
+    FOREIGN KEY(`ma_id`) REFERENCES martial_arts(`id`)
+	ON UPDATE CASCADE ON DELETE RESTRICT)ENGINE = InnoDB;
+    
